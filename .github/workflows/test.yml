@@ -17,7 +17,7 @@ jobs:
         ref: ${{ github.head_ref }}
     - name: update README.md
       run: |
-        git config --local user.name "github-actions[bot]"
+        git config --local user.name "xavier.forestier"
         git config --local user.email "{ID}+{username}@users.noreply.github.com"
         sed -ie "s/\\(https:\\/\\/img\\.shields\\.io\\/badge\\/shellcheck-\\)[^-]*-[^\\?]*/\\1shellcheck%20\\(running\\.\\.\\.\\)-f85149/" README.md
         sed -ie "s/\\(https:\\/\\/img\\.shields\\.io\\/badge\\/pkgcheck-\\)[^-]*-[^\\?]*/\\1pkgcheck%20\\(running\\.\\.\\.\\)-f85149/" README.md
@@ -41,7 +41,7 @@ jobs:
         additional_files: '*.ebuild'
     - name: update README.md
       run: |
-        git config --local user.name "github-actions[bot]"
+        git config --local user.name "xavier.forestier"
         git config --local user.email "{ID}+{username}@users.noreply.github.com"
         sed -ie "s/\\(https:\\/\\/img\\.shields\\.io\\/badge\\/shellcheck-\\)[^-]*-[^\\?]*/\\1shellcheck-238636/" README.md
         git add README.md
@@ -60,7 +60,7 @@ jobs:
       uses: pkgcore/pkgcheck-action@v1
     - name: update README.md
       run: |
-        git config --local user.name "github-actions[bot]"
+        git config --local user.name "xavier.forestier"
         git config --local user.email "{ID}+{username}@users.noreply.github.com"
         sed -ie "s/\\(https:\\/\\/img\\.shields\\.io\\/badge\\/pkgcheck-\\)[^-]*-[^\\?]*/\\1pkgcheck-238636/" README.md
         git add README.md
