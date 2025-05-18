@@ -1,0 +1,68 @@
+name: Check code quality
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  init_readme:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    - name: update README.md
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "{ID}+{username}@users.noreply.github.com"
+        sed -ie "s/\\(https:\\/\\/img\\.shields\\.io\\/badge\\/shellcheck-\\)[^-]*-[^\\?]*/\\1shellcheck%20\\(running\\.\\.\\.\\)-f85149/" README.md
+        sed -ie "s/\\(https:\\/\\/img\\.shields\\.io\\/badge\\/pkgcheck-\\)[^-]*-[^\\?]*/\\1pkgcheck%20\\(running\\.\\.\\.\\)-f85149/" README.md
+        git add README.md
+        git commit -m "update README.md"
+        git push
+  shellcheck:
+    name: shellcheck
+    needs: init_readme
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    - name: Run shellcheck
+      uses: ludeeus/action-shellcheck@master
+      env:
+        SHELLCHECK_OPTS: -s bash -e SC2034 -e SC2016
+      with:
+        additional_files: '*.ebuild'
+    - name: update README.md
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "{ID}+{username}@users.noreply.github.com"
+        sed -ie "s/\\(https:\\/\\/img\\.shields\\.io\\/badge\\/shellcheck-\\)[^-]*-[^\\?]*/\\1shellcheck-238636/" README.md
+        git add README.md
+        git commit -m "update README.md"
+        git push
+  pkgcheck:
+    name: pkgcheck
+    needs: init_readme
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}        
+    - name: Run pkgcheck
+      uses: pkgcore/pkgcheck-action@v1
+    - name: update README.md
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "{ID}+{username}@users.noreply.github.com"
+        sed -ie "s/\\(https:\\/\\/img\\.shields\\.io\\/badge\\/pkgcheck-\\)[^-]*-[^\\?]*/\\1pkgcheck-238636/" README.md
+        git add README.md
+        git commit -m "update README.md"
+        git push
